@@ -12,3 +12,29 @@ const gallery = document.querySelector('.gallery');
 let page = 1;
 const perPage = 40;
 let lightbox;
+// Пошук зображень
+async function searchImages(query) {
+    try {
+      loader.style.display = 'block';
+      
+      const response = await axios.get('https://pixabay.com/api/', {
+      // Параметри Pixabay API
+        params: {
+          key: pixabayAPIKey,
+          q: query,
+          image_type: 'photo',
+          orientation: 'horizontal',
+          safesearch: true,
+          page: page,
+          per_page: perPage,
+          image_details: true,
+        }
+      });
+  
+      loader.style.display = 'none';
+      return response.data;
+    } catch (error) {
+      loader.style.display = 'none';
+      throw error;
+    }
+  }
