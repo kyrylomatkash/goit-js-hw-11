@@ -87,3 +87,48 @@ function renderImages(imageData) {
     initializeSimpleLightbox();
     smoothScrollToGallery();
   }
+  // Бібліотека SimpleLightbox
+function initializeSimpleLightbox() {
+    lightbox = new SimpleLightbox('.gallery a', {
+      captions: true,
+      captionDelay: 250,
+      fadeSpeed: 250,
+      captionSelector: 'img',
+      captionsData: 'alt',
+      captionPosition: 'bottom',
+      close: true,
+      closeText: '×',
+      nav: true,
+      navText: ['←', '→'],
+      download: 'Click to download button',
+    });
+    lightbox.refresh();
+  }
+  // Пошукова форма
+  searchForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const searchQuery = searchForm.querySelector('input[name="searchQuery"]').value.trim();
+  
+    if (searchQuery === '') {
+      Notiflix.Notify.failure('Please enter a search query.');
+      return;
+    }
+  
+    page = 1;
+  
+    try {
+      loader.style.display = 'block';
+      const imageData = await searchImages(searchQuery);
+      loader.style.display = 'none';
+  
+      if (imageData.hits.length > 0) {
+        renderImages(imageData);
+        Notiflix.Notify.success(`Hooray! We found ${imageData.totalHits} images.`);
+      } else {
+        Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+      }
+    } catch (error) {
+      Notiflix.Notify.failure('Failed to load images. Please try again.');
+    }
+  });
+  
