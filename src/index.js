@@ -82,6 +82,7 @@ function renderImages(imageData) {
       showLoadMoreButton();
     } else {
       hideLoadMoreButton();
+      Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
     }
   
     initializeSimpleLightbox();
@@ -145,7 +146,6 @@ document.querySelector('.load-more').addEventListener('click', async () => {
         renderImages(imageData);
       } else {
         hideLoadMoreButton();
-        Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
       }
     } catch (error) {
       Notiflix.Notify.failure('Failed to load more images. Please try again.');
