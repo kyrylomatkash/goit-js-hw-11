@@ -131,4 +131,39 @@ function initializeSimpleLightbox() {
       Notiflix.Notify.failure('Failed to load images. Please try again.');
     }
   });
+  // Кнопка Load more 
+document.querySelector('.load-more').addEventListener('click', async () => {
+    page++;
+    const searchQuery = searchForm.querySelector('input[name="searchQuery"]').value.trim();
   
+    try {
+      loader.style.display = 'block';
+      const imageData = await searchImages(searchQuery);
+      loader.style.display = 'none';
+  
+      if (imageData.hits.length > 0) {
+        renderImages(imageData);
+      } else {
+        hideLoadMoreButton();
+        Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+      }
+    } catch (error) {
+      Notiflix.Notify.failure('Failed to load more images. Please try again.');
+    }
+  });
+  // Відображення кнопки Load more
+  function showLoadMoreButton() {
+    document.querySelector('.load-more').style.display = 'block';
+  }
+  // Приховання кнопки Load more
+  function hideLoadMoreButton() {
+    document.querySelector('.load-more').style.display = 'none';
+  }
+  // Smooth скрол
+  function smoothScrollToGallery() {
+    const { height: cardHeight } = document.querySelector(".gallery").firstElementChild.getBoundingClientRect();
+    window.scrollBy({
+      top: cardHeight * 2,
+      behavior: "smooth",
+    });
+  }  
